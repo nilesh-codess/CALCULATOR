@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Hub | Nilesh Kumar</title>
+    <style>
+        :root {
+            --bg: #E0F2F1;
+            --fb: #1877F2;
+            --yt: #FF0000;
+            --wa: #25D366;
+            --ig: #E1306C;
+            --sc: #FFFC00;
+            --sp: #1DB954;
+            --black: #000000;
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Lexend', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        /* Profile image setup */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--black);
+            margin: 0 auto 15px;
+            box-shadow: 8px 8px 0px var(--black);
+            /* Aesthetic placeholder image added here */
+            background-image: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=400&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            opacity: 0.8; /* Slightly lowered opacity so it's not too dark */
+            background-color: white;
+        }
+
+        h1 { font-size: 26px; text-transform: uppercase; margin-bottom: 5px; color: var(--black); }
+        p { font-weight: 500; margin-bottom: 30px; color: #333; }
+
+        /* General Button Style */
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--black);
+            font-weight: 800;
+            font-size: 18px;
+            padding: 15px;
+            margin-bottom: 18px;
+            border: 3px solid var(--black);
+            border-radius: 15px;
+            transition: all 0.1s ease;
+        }
+
+        /* Individual Colors */
+        .fb { background: var(--fb); color: white; box-shadow: 6px 6px 0px var(--black); }
+        .yt { background: var(--yt); color: white; box-shadow: 6px 6px 0px var(--black); }
+        .wa { background: var(--wa); color: white; box-shadow: 6px 6px 0px var(--black); }
+        .ig { background: var(--ig); color: white; box-shadow: 6px 6px 0px var(--black); }
+        .sc { background: var(--sc); box-shadow: 6px 6px 0px var(--black); }
+        .sp { background: var(--sp); color: white; box-shadow: 6px 6px 0px var(--black); }
+
+        /* 3D Press Effect */
+        .social-link:hover { transform: translate(2px, 2px); box-shadow: 3px 3px 0px var(--black); }
+        .social-link:active { transform: translate(6px, 6px); box-shadow: 0px 0px 0px var(--black); }
+
+        .footer { margin-top: 20px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <div class="profile-img"></div>
+        
+        <h1>NILESH KUMAR</h1>
+        <p>Connect with me everywhere</p>
+
+        <a href="https://facebook.com" target="_blank" class="social-link fb">FACEBOOK</a>
+        <a href="https://youtube.com" target="_blank" class="social-link yt">YOUTUBE</a>
+        <a href="https://whatsapp.com" target="_blank" class="social-link wa">WHATSAPP</a>
+        <a href="https://instagram.com" target="_blank" class="social-link ig">INSTAGRAM</a>
+        <a href="https://snapchat.com" target="_blank" class="social-link sc">SNAPCHAT</a>
+        <a href="https://spotify.com" target="_blank" class="social-link sp">SPOTIFY</a>
+
+        <div class="footer">MADE WITH ❤️ BY NILESH KUMAR</div>
+    </div>
+
+</body>
+</html>

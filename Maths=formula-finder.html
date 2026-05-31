@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GanitKosha – Maths Formula Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#faf8f4;
+  --ink:#1c1917;
+  --surface:#ffffff;
+  --surface2:#f3f0ea;
+  --border:#e5e0d5;
+  --border2:#ccc6b8;
+  --accent:#c2410c;
+  --accent-bg:#fff4ee;
+  --blue:#1e40af;
+  --blue-bg:#eff6ff;
+  --green:#166534;
+  --green-bg:#f0fdf4;
+  --purple:#6d28d9;
+  --purple-bg:#f5f3ff;
+  --teal:#0f766e;
+  --teal-bg:#f0fdfa;
+  --amber:#b45309;
+  --amber-bg:#fefce8;
+  --cyan:#0369a1;
+  --cyan-bg:#eff6ff;
+  --muted:#78716c;
+  --radius:10px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+
+/* HEADER */
+.header{background:var(--ink);padding:32px 24px 28px;position:relative;overflow:hidden;}
+.header::after{
+  content:'∑ ∫ π √ ∞ θ Δ';
+  position:absolute;right:20px;top:50%;transform:translateY(-50%);
+  font-family:'Libre Baskerville',serif;font-size:30px;letter-spacing:14px;
+  color:rgba(255,255,255,0.05);pointer-events:none;white-space:nowrap;
+}
+.header-inner{max-width:980px;margin:0 auto;position:relative;z-index:1;}
+.logo{font-family:'Libre Baskerville',serif;font-size:36px;font-weight:700;color:#fff;letter-spacing:-1px;line-height:1.1;margin-bottom:4px;}
+.logo span{color:#fb923c;}
+.logo-sub{font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:22px;letter-spacing:0.3px;}
+.search-wrap{display:flex;gap:0;background:#fff;border-radius:var(--radius);overflow:hidden;max-width:580px;}
+.search-wrap input{flex:1;border:none;outline:none;padding:13px 18px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);}
+.search-wrap input::placeholder{color:#a8a29e;}
+.search-btn{background:var(--accent);border:none;padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:#fff;cursor:pointer;transition:opacity .15s;}
+.search-btn:hover{opacity:.88;}
+.header-stats{display:flex;gap:22px;margin-top:14px;flex-wrap:wrap;}
+.hstat{font-size:12px;color:rgba(255,255,255,0.4);}
+.hstat strong{color:rgba(255,255,255,0.7);font-weight:500;}
+
+/* MAIN */
+.main{max-width:980px;margin:0 auto;padding:28px 24px 80px;}
+
+/* FILTERS */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px;align-items:center;}
+.fl{font-size:11px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.6px;white-space:nowrap;margin-right:2px;}
+.fchip,.cchip{padding:6px 14px;border-radius:20px;font-size:13px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;transition:all .12s;font-family:'DM Sans',sans-serif;}
+.cchip{padding:5px 11px;font-size:12px;}
+.fchip:hover,.cchip:hover{border-color:var(--border2);color:var(--ink);}
+.fchip.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+.cchip.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+.vdivider{width:1px;height:26px;background:var(--border);align-self:center;}
+
+/* BOOKMARKS */
+.bm-strip{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:13px 18px;margin-bottom:18px;display:none;}
+.bm-strip.show{display:block;}
+.bm-strip h4{font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:9px;}
+.bm-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.bm-chip{font-size:12px;padding:4px 12px;border-radius:20px;background:var(--accent-bg);border:1px solid #fbd0b7;color:var(--accent);cursor:pointer;transition:opacity .1s;}
+.bm-chip:hover{opacity:.72;}
+
+/* RESULT */
+.result-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px;}
+.result-row span{font-size:13px;color:var(--muted);}
+.result-row strong{color:var(--ink);}
+.clr-btn{font-size:13px;color:var(--accent);cursor:pointer;display:none;}
+
+/* TOPIC BLOCK */
+.topic-block{margin-bottom:34px;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.topic-header{display:flex;align-items:center;gap:12px;margin-bottom:15px;padding-bottom:12px;border-bottom:2px solid var(--border);}
+.topic-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Libre Baskerville',serif;font-size:16px;font-weight:700;flex-shrink:0;}
+.topic-name{font-family:'Libre Baskerville',serif;font-size:20px;font-weight:700;color:var(--ink);}
+.topic-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* FORMULA GRID */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:12px;}
+.fcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 17px;transition:border-color .15s,box-shadow .15s;position:relative;overflow:hidden;}
+.fcard:hover{border-color:var(--border2);box-shadow:0 2px 12px rgba(0,0,0,0.07);}
+.fcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.fcard.algebra::before{background:var(--blue);}
+.fcard.geometry::before{background:var(--green);}
+.fcard.trigonometry::before{background:var(--purple);}
+.fcard.calculus::before{background:var(--accent);}
+.fcard.statistics::before{background:var(--teal);}
+.fcard.arithmetic::before{background:var(--amber);}
+.fcard.mensuration::before{background:var(--cyan);}
+
+.f-cat{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:9px;}
+.algebra .f-cat{color:var(--blue);}
+.geometry .f-cat{color:var(--green);}
+.trigonometry .f-cat{color:var(--purple);}
+.calculus .f-cat{color:var(--accent);}
+.statistics .f-cat{color:var(--teal);}
+.arithmetic .f-cat{color:var(--amber);}
+.mensuration .f-cat{color:var(--cyan);}
+
+.f-formula{font-family:'Libre Baskerville',serif;font-size:17px;font-weight:700;color:var(--ink);background:var(--surface2);border-radius:6px;padding:10px 13px;margin-bottom:9px;word-break:break-word;}
+.f-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px;}
+.f-desc{font-size:12px;color:var(--muted);line-height:1.55;margin-bottom:10px;}
+.f-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+.f-cls{font-size:11px;padding:2px 8px;border-radius:4px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+.f-actions{display:flex;gap:5px;}
+.act-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .12s;font-family:'DM Sans',sans-serif;}
+.act-btn:hover{background:var(--surface2);color:var(--ink);}
+.act-btn.copied{background:var(--green-bg);color:var(--green);border-color:#86efac;}
+.act-btn.saved{background:var(--accent-bg);color:var(--accent);border-color:#fbd0b7;}
+
+/* EMPTY */
+.empty{text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-sym{font-family:'Libre Baskerville',serif;font-size:56px;color:var(--border2);margin-bottom:12px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="logo">Ganit<span>Kosha</span></div>
+    <div class="logo-sub">Class 6 – 12 · Maths Formula Reference · BCA Project</div>
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Formula dhundo... jaise 'area', 'sin', 'quadratic', 'AP'" oninput="render()"/>
+      <button class="search-btn" onclick="render()">🔍 Dhundo</button>
+    </div>
+    <div class="header-stats">
+      <div class="hstat">Total Formulas: <strong id="hTotal">0</strong></div>
+      <div class="hstat">Dikh raha: <strong id="hShow">0</strong></div>
+      <div class="hstat">Bookmarks: <strong id="hBm">0</strong></div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <span class="fl">Category:</span>
+    <button class="fchip on" onclick="setCat('all',this)">Sab</button>
+    <button class="fchip" onclick="setCat('arithmetic',this)">Arithmetic</button>
+    <button class="fchip" onclick="setCat('algebra',this)">Algebra</button>
+    <button class="fchip" onclick="setCat('geometry',this)">Geometry</button>
+    <button class="fchip" onclick="setCat('mensuration',this)">Mensuration</button>
+    <button class="fchip" onclick="setCat('trigonometry',this)">Trigonometry</button>
+    <button class="fchip" onclick="setCat('statistics',this)">Statistics</button>
+    <button class="fchip" onclick="setCat('calculus',this)">Calculus</button>
+    <div class="vdivider"></div>
+    <span class="fl">Class:</span>
+    <button class="cchip on" onclick="setCl('all',this)">Sab</button>
+    <button class="cchip" onclick="setCl('6',this)">6</button>
+    <button class="cchip" onclick="setCl('7',this)">7</button>
+    <button class="cchip" onclick="setCl('8',this)">8</button>
+    <button class="cchip" onclick="setCl('9',this)">9</button>
+    <button class="cchip" onclick="setCl('10',this)">10</button>
+    <button class="cchip" onclick="setCl('11',this)">11</button>
+    <button class="cchip" onclick="setCl('12',this)">12</button>
+  </div>
+
+  <!-- BOOKMARKS -->
+  <div class="bm-strip" id="bmStrip">
+    <h4>⭐ Saved Formulas</h4>
+    <div class="bm-chips" id="bmChips"></div>
+  </div>
+
+  <!-- RESULT ROW -->
+  <div class="result-row">
+    <span id="resultTxt"></span>
+    <span class="clr-btn" id="clrBtn" onclick="clearQ()">✕ Clear search</span>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content"></div>
+</div>
+
+<script>
+const DB = [
+  /* ── ARITHMETIC ── */
+  {id:'ar1',topic:'BODMAS & Basic Rules',cat:'arithmetic',cls:['6','7'],
+   name:'BODMAS Rule',formula:'B → O → D → M → A → S',
+   title:'Operations ka sahi order',
+   desc:'Brackets, Orders (powers/roots), Division, Multiplication, Addition, Subtraction. Is order mein calculate karo.'},
+  {id:'ar2',topic:'BODMAS & Basic Rules',cat:'arithmetic',cls:['6'],
+   name:'LCM × HCF',formula:'LCM × HCF = a × b',
+   title:'Do sankhyaon ka product',
+   desc:'Kisi bhi do natural numbers a aur b ke liye: LCM(a,b) × HCF(a,b) = a × b.'},
+  {id:'ar3',topic:'Percentage',cat:'arithmetic',cls:['7','8'],
+   name:'Percentage',formula:'% = (Part ÷ Whole) × 100',
+   title:'Kisi value ka pratishat',
+   desc:'Jaise: 25/50 × 100 = 50%. Value find karna: (% × Total) ÷ 100'},
+  {id:'ar4',topic:'Profit & Loss',cat:'arithmetic',cls:['7','8'],
+   name:'Profit & Loss %',formula:'P% = (Profit ÷ CP) × 100',
+   title:'Vyapaar mein labh-hani',
+   desc:'Loss% = (Loss ÷ CP) × 100. SP = CP × (1 + P%/100). CP = Cost Price, SP = Selling Price.'},
+  {id:'ar5',topic:'Ratio & Proportion',cat:'arithmetic',cls:['6','7'],
+   name:'Proportion',formula:'a/b = c/d  ⟹  a×d = b×c',
+   title:'Anupat aur samanupat',
+   desc:'Cross multiplication. a:b = c:d mein a aur d = extremes, b aur c = means. Product of means = product of extremes.'},
+  {id:'ar6',topic:'Simple Interest',cat:'arithmetic',cls:['8','9'],
+   name:'Simple Interest',formula:'SI = (P × R × T) ÷ 100',
+   title:'Saada byaaj',
+   desc:'P = Principal (Mool), R = Rate % per year, T = Time in years. Total Amount = P + SI'},
+  {id:'ar7',topic:'Compound Interest',cat:'arithmetic',cls:['8','9','10'],
+   name:'Compound Interest',formula:'A = P(1 + R/100)ⁿ',
+   title:'Chakravridhi byaaj',
+   desc:'CI = A − P. Half-yearly: A = P(1 + R/200)²ⁿ. Quarterly: A = P(1 + R/400)⁴ⁿ'},
+  {id:'ar8',topic:'Speed, Distance, Time',cat:'arithmetic',cls:['7','8'],
+   name:'Speed Formula',formula:'Speed = Distance ÷ Time',
+   title:'Chaal, doori, samay',
+   desc:'Distance = Speed × Time. Time = Distance ÷ Speed. Average speed = Total Distance ÷ Total Time.'},
+
+  /* ── ALGEBRA ── */
+  {id:'al1',topic:'Algebraic Identities',cat:'algebra',cls:['8','9'],
+   name:'(a+b)²',formula:'(a + b)² = a² + 2ab + b²',
+   title:'Yog ka varg',
+   desc:'Jaise: (x+3)² = x² + 6x + 9. Bahut frequently factorisation mein use hota hai.'},
+  {id:'al2',topic:'Algebraic Identities',cat:'algebra',cls:['8','9'],
+   name:'(a−b)²',formula:'(a − b)² = a² − 2ab + b²',
+   title:'Antar ka varg',
+   desc:'Jaise: (x−5)² = x² − 10x + 25.'},
+  {id:'al3',topic:'Algebraic Identities',cat:'algebra',cls:['8','9'],
+   name:'a² − b²',formula:'a² − b² = (a+b)(a−b)',
+   title:'Vargon ka antar',
+   desc:'Conjugate pairs. Jaise: x²−16 = (x+4)(x−4). Factorisation mein sabse common identity.'},
+  {id:'al4',topic:'Algebraic Identities',cat:'algebra',cls:['9'],
+   name:'(a+b+c)²',formula:'(a+b+c)² = a²+b²+c²+2ab+2bc+2ca',
+   title:'Teen raashiyon ke yog ka varg',
+   desc:'Teen variables ke liye. Each variable ka square + 2 × har ek pair ka product.'},
+  {id:'al5',topic:'Algebraic Identities',cat:'algebra',cls:['9'],
+   name:'(a+b)³',formula:'(a+b)³ = a³ + 3a²b + 3ab² + b³',
+   title:'Yog ka ghaan',
+   desc:'Shortcut: (a+b)³ = a³ + b³ + 3ab(a+b). (a−b)³ = a³ − b³ − 3ab(a−b)'},
+  {id:'al6',topic:'Algebraic Identities',cat:'algebra',cls:['9'],
+   name:'a³ ± b³',formula:'a³+b³ = (a+b)(a²−ab+b²)',
+   title:'Ghano ka yog/antar',
+   desc:'a³−b³ = (a−b)(a²+ab+b²). Yaad karo: factor mein sign same, doosra factor mein opposite sign middle mein.'},
+  {id:'al7',topic:'Quadratic Equations',cat:'algebra',cls:['10'],
+   name:'Quadratic Formula',formula:'x = [−b ± √(b²−4ac)] ÷ 2a',
+   title:'Dwidhaat samikaran ke mool',
+   desc:'ax²+bx+c=0 ke liye. Discriminant D = b²−4ac. D>0: 2 alag real roots, D=0: equal roots, D<0: imaginary roots.'},
+  {id:'al8',topic:'Quadratic Equations',cat:'algebra',cls:['10'],
+   name:'Sum & Product of Roots',formula:'α+β = −b/a  ,  αβ = c/a',
+   title:'Mulon ka yog aur gunanfal',
+   desc:'Roots find kiye bina bhi sum/product nikal sakte hain. Quadratic: x² − (α+β)x + αβ = 0'},
+  {id:'al9',topic:'Arithmetic Progression',cat:'algebra',cls:['10','11'],
+   name:'AP — nth Term',formula:'aₙ = a + (n−1)d',
+   title:'Samantar shreni ka nth pad',
+   desc:'a = first term, d = common difference = a₂−a₁. Last term l = a+(n−1)d'},
+  {id:'al10',topic:'Arithmetic Progression',cat:'algebra',cls:['10','11'],
+   name:'AP — Sum',formula:'Sₙ = n/2 × [2a + (n−1)d]',
+   title:'AP ka yog',
+   desc:'Ya Sₙ = n/2 × (a + l) jab last term l pata ho. n = number of terms.'},
+  {id:'al11',topic:'Geometric Progression',cat:'algebra',cls:['11'],
+   name:'GP — nth Term',formula:'aₙ = a × rⁿ⁻¹',
+   title:'Gunottar shreni ka nth pad',
+   desc:'r = common ratio = a₂/a₁. |r|>1: increasing, 0<|r|<1: decreasing GP.'},
+  {id:'al12',topic:'Geometric Progression',cat:'algebra',cls:['11'],
+   name:'GP — Sum & Infinite',formula:'Sₙ = a(rⁿ−1)/(r−1)  ,  S∞ = a/(1−r)',
+   title:'GP ka yog',
+   desc:'S∞ sirf tab, jab |r| < 1. r=1 ho to Sₙ = na. r≠1 ke liye standard formula use karo.'},
+  {id:'al13',topic:'Binomial Theorem',cat:'algebra',cls:['11'],
+   name:'Binomial General Term',formula:'Tᵣ₊₁ = ⁿCᵣ × aⁿ⁻ʳ × bʳ',
+   title:'Dwipad pramet — vyaapak pad',
+   desc:'r = 0,1,2...n. (a+b)ⁿ = Σ Tᵣ₊₁. Middle term: n even→ T(n/2+1), n odd→ T((n+1)/2) aur T((n+3)/2)'},
+
+  /* ── GEOMETRY ── */
+  {id:'g1',topic:'Angles & Triangles',cat:'geometry',cls:['6','7'],
+   name:'Angle Sum — Triangle',formula:'∠A + ∠B + ∠C = 180°',
+   title:'Tribhuj ke koNo ka yog',
+   desc:'Kisi bhi tribhuj ke teeno andar ke koNo ka yog hamesha 180°. Exterior angle = sum of two non-adjacent interior angles.'},
+  {id:'g2',topic:'Angles & Triangles',cat:'geometry',cls:['8'],
+   name:'Angle Sum — Polygon',formula:'Interior angle sum = (n−2) × 180°',
+   title:'Bahubhuj ke koNo ka yog',
+   desc:'n = number of sides. Each interior angle of regular polygon = (n−2)×180°/n. Exterior angle = 360°/n'},
+  {id:'g3',topic:'Pythagoras Theorem',cat:'geometry',cls:['8','9','10'],
+   name:'Pythagoras Theorem',formula:'a² + b² = c²',
+   title:'Samkon tribhuj ka niyam',
+   desc:'c = hypotenuse (sabse badi bahu). Common triplets: 3-4-5, 5-12-13, 8-15-17, 7-24-25.'},
+  {id:'g4',topic:'Circles',cat:'geometry',cls:['9','10'],
+   name:'Angle in Semicircle',formula:'Angle in semicircle = 90°',
+   title:'Ardh-vrit mein kon (Thales)',
+   desc:'Diameter par bana kona hamesha 90°. Ek hi arc ke kone equal hote hain same segment mein.'},
+  {id:'g5',topic:'Circles',cat:'geometry',cls:['9','10'],
+   name:'Tangent Properties',formula:'Tangent ⊥ Radius at contact point',
+   title:'Sparsh rekha ke gun',
+   desc:'Ek bahri bindu se 2 equal tangents. Tangent² = PA × PB (secant-tangent relation).'},
+  {id:'g6',topic:'Coordinate Geometry',cat:'geometry',cls:['10','11'],
+   name:'Distance Formula',formula:'d = √[(x₂−x₁)² + (y₂−y₁)²]',
+   title:'Do binduon ki doori',
+   desc:'Origin se distance = √(x²+y²). Pythagoras theorem ka extension hai yeh.'},
+  {id:'g7',topic:'Coordinate Geometry',cat:'geometry',cls:['10','11'],
+   name:'Section Formula',formula:'P = ((mx₂+nx₁)/(m+n) , (my₂+ny₁)/(m+n))',
+   title:'Vibhajan sutra',
+   desc:'P, line AB ko m:n mein divide karta hai. Midpoint: m=n=1, so M = ((x₁+x₂)/2, (y₁+y₂)/2)'},
+  {id:'g8',topic:'Coordinate Geometry',cat:'geometry',cls:['10','11'],
+   name:'Slope & Line Equation',formula:'m = (y₂−y₁)/(x₂−x₁)  ,  y = mx + c',
+   title:'Rekha ki dhaal aur samikaran',
+   desc:'Parallel lines: m₁=m₂. Perpendicular: m₁×m₂ = −1. Point-slope form: y−y₁ = m(x−x₁)'},
+
+  /* ── MENSURATION ── */
+  {id:'me1',topic:'2D — Basic Shapes',cat:'mensuration',cls:['6','7'],
+   name:'Rectangle & Square',formula:'Rect: A=l×b, P=2(l+b)  |  Sq: A=a², P=4a',
+   title:'Aayat aur varg',
+   desc:'A = Area, P = Perimeter. Diagonal of rectangle = √(l²+b²). Diagonal of square = a√2.'},
+  {id:'me2',topic:'2D — Basic Shapes',cat:'mensuration',cls:['6','7'],
+   name:'Triangle Area',formula:'Area = ½ × base × height',
+   title:'Tribhuj ka kshetrafal',
+   desc:'Equilateral: A = (√3/4)a². Right triangle: A = ½ × leg₁ × leg₂.'},
+  {id:'me3',topic:'2D — Basic Shapes',cat:'mensuration',cls:['7','8'],
+   name:'Circle',formula:'Area = πr²  ,  Circumference = 2πr',
+   title:'Vrit ka kshetrafal aur paridhi',
+   desc:'r = radius, π ≈ 3.14159. Diameter d = 2r. Sector area = (θ/360°)×πr². Arc length = (θ/360°)×2πr.'},
+  {id:'me4',topic:'2D — Advanced',cat:'mensuration',cls:['9'],
+   name:"Heron's Formula",formula:'A = √[s(s−a)(s−b)(s−c)]',
+   title:'Tribhuj ka kshetrafal — teen bahuon se',
+   desc:'s = semi-perimeter = (a+b+c)/2. Jab height nahi pata ho tab use karo.'},
+  {id:'me5',topic:'2D — Advanced',cat:'mensuration',cls:['8','9'],
+   name:'Trapezium & Rhombus',formula:'Trap: A = ½(a+b)h  |  Rhom: A = ½×d₁×d₂',
+   title:'Samlamb chaturbhuj aur samchaturbhuj',
+   desc:'a,b = parallel sides of trapezium, h = height. d₁,d₂ = diagonals of rhombus.'},
+  {id:'me6',topic:'3D — Cylinder & Cone',cat:'mensuration',cls:['9','10'],
+   name:'Cylinder',formula:'CSA=2πrh  ,  TSA=2πr(r+h)  ,  V=πr²h',
+   title:'Balan (Cylinder)',
+   desc:'CSA = Curved/Lateral Surface Area. TSA = Total SA. V = Volume. r = radius, h = height.'},
+  {id:'me7',topic:'3D — Cylinder & Cone',cat:'mensuration',cls:['9','10'],
+   name:'Cone',formula:'CSA=πrl  ,  TSA=πr(r+l)  ,  V=⅓πr²h',
+   title:'Shankhu (Cone)',
+   desc:'l = slant height = √(r²+h²). Volume is ⅓ of cylinder with same r and h.'},
+  {id:'me8',topic:'3D — Sphere & Cuboid',cat:'mensuration',cls:['9','10'],
+   name:'Sphere & Hemisphere',formula:'SA=4πr²  ,  V=(4/3)πr³',
+   title:'Gola (Sphere)',
+   desc:'Hemisphere: CSA=2πr², TSA=3πr², V=(2/3)πr³. R = radius of sphere.'},
+  {id:'me9',topic:'3D — Sphere & Cuboid',cat:'mensuration',cls:['8','9'],
+   name:'Cuboid & Cube',formula:'Cuboid: V=lbh, SA=2(lb+bh+lh)',
+   title:'Ghanaabh (Cuboid)',
+   desc:'Cube: V=a³, SA=6a², Diagonal=a√3. Cuboid diagonal = √(l²+b²+h²).'},
+
+  /* ── TRIGONOMETRY ── */
+  {id:'t1',topic:'Basic Trig Ratios',cat:'trigonometry',cls:['10','11'],
+   name:'sin, cos, tan',formula:'sin=P/H  ,  cos=B/H  ,  tan=P/B',
+   title:'Mool trikonamiti anupat',
+   desc:'P=Perpendicular, B=Base, H=Hypotenuse. Trick: Pandit Badri Prasad / Har Har Bole. tan = sin/cos.'},
+  {id:'t2',topic:'Basic Trig Ratios',cat:'trigonometry',cls:['10','11'],
+   name:'Reciprocal Ratios',formula:'cosec=1/sin  ,  sec=1/cos  ,  cot=1/tan',
+   title:'Vyutkarma (Reciprocal) anupat',
+   desc:'sinθ × cosecθ = 1. cosθ × secθ = 1. tanθ × cotθ = 1.'},
+  {id:'t3',topic:'Trig Identities',cat:'trigonometry',cls:['10','11'],
+   name:'Pythagorean Identities',formula:'sin²θ + cos²θ = 1',
+   title:'Pyuthagorean samasmikaran',
+   desc:'Is se: 1 + tan²θ = sec²θ  aur  1 + cot²θ = cosec²θ. Ye teeno yaad karo — bahut kaam aate hain.'},
+  {id:'t4',topic:'Standard Angles',cat:'trigonometry',cls:['10','11'],
+   name:'Standard Values Table',formula:'sin30°=½  sin45°=1/√2  sin60°=√3/2',
+   title:'Pradhanmanik koNo ke maan',
+   desc:'cos: reverse of sin (cos30°=√3/2, cos45°=1/√2, cos60°=½). tan30°=1/√3, tan45°=1, tan60°=√3. sin0°=0, sin90°=1.'},
+  {id:'t5',topic:'Compound Angles',cat:'trigonometry',cls:['11'],
+   name:'sin(A±B)',formula:'sin(A±B) = sinA·cosB ± cosA·sinB',
+   title:'Yog aur antar ke sutra — sin',
+   desc:'cos(A±B) = cosA·cosB ∓ sinA·sinB. Notice: sin mein same sign, cos mein opposite sign.'},
+  {id:'t6',topic:'Compound Angles',cat:'trigonometry',cls:['11'],
+   name:'Double Angle',formula:'sin2A=2sinAcosA  ,  cos2A=cos²A−sin²A',
+   title:'Dwigun kon sutra',
+   desc:'cos2A ke 3 roop: 1−2sin²A = 2cos²A−1 = cos²A−sin²A. tan2A = 2tanA/(1−tan²A)'},
+  {id:'t7',topic:'Inverse Trig',cat:'trigonometry',cls:['12'],
+   name:'Inverse Trig Ranges',formula:'sin⁻¹: [−π/2, π/2]  ,  cos⁻¹: [0, π]',
+   title:'Pratilom trikonamiti ka maan-kshetr (Range)',
+   desc:'tan⁻¹: (−π/2, π/2). sin⁻¹(−x)=−sin⁻¹x, cos⁻¹(−x)=π−cos⁻¹x, tan⁻¹(x)+cot⁻¹(x)=π/2'},
+  {id:'t8',topic:'Inverse Trig',cat:'trigonometry',cls:['12'],
+   name:'Inverse Trig Identities',formula:'sin⁻¹x + cos⁻¹x = π/2',
+   title:'Pratilom trikonamiti ke sutra',
+   desc:'tan⁻¹x + cot⁻¹x = π/2. sec⁻¹x + cosec⁻¹x = π/2. tan⁻¹x + tan⁻¹y = tan⁻¹[(x+y)/(1−xy)]'},
+
+  /* ── STATISTICS ── */
+  {id:'s1',topic:'Central Tendency',cat:'statistics',cls:['8','9','10'],
+   name:'Mean (Average)',formula:'x̄ = Σxᵢ / n',
+   title:'Samantar madhya',
+   desc:'Grouped data: x̄ = Σfᵢxᵢ / Σfᵢ. Step deviation method: x̄ = a + (Σfᵢuᵢ/Σfᵢ)×h'},
+  {id:'s2',topic:'Central Tendency',cat:'statistics',cls:['9','10'],
+   name:'Median',formula:'Med = L + [(n/2 − cf)/f] × h',
+   title:'Madhyika (Middle value)',
+   desc:'L = lower boundary of median class, cf = cumulative frequency before, f = freq of median class, h = class size.'},
+  {id:'s3',topic:'Central Tendency',cat:'statistics',cls:['9','10'],
+   name:'Mode',formula:'Mode = L + [(f₁−f₀)/(2f₁−f₀−f₂)] × h',
+   title:'Bahulak (Most frequent value)',
+   desc:'f₁ = modal class frequency, f₀ = preceding class, f₂ = succeeding class, h = class width.'},
+  {id:'s4',topic:'Probability',cat:'statistics',cls:['10','11'],
+   name:'Classical Probability',formula:'P(E) = n(E) / n(S)',
+   title:'Sambhavita (Probability)',
+   desc:'n(E) = favorable outcomes, n(S) = total sample space. 0 ≤ P(E) ≤ 1. P(A) + P(A\') = 1'},
+  {id:'s5',topic:'Probability',cat:'statistics',cls:['11','12'],
+   name:'Addition Rule',formula:'P(A∪B) = P(A) + P(B) − P(A∩B)',
+   title:'Sambhavita — yog niyam',
+   desc:'Mutually exclusive events (A∩B = φ): P(A∪B) = P(A)+P(B). Independent: P(A∩B) = P(A)×P(B)'},
+  {id:'s6',topic:'Variance & SD',cat:'statistics',cls:['11','12'],
+   name:'Standard Deviation',formula:'σ = √[Σ(xᵢ − x̄)² / n]',
+   title:'Manak Vichalan (Standard Deviation)',
+   desc:'Variance = σ². Coefficient of variation = (σ/x̄)×100. SD measures spread of data around mean.'},
+
+  /* ── CALCULUS ── */
+  {id:'c1',topic:'Limits',cat:'calculus',cls:['11'],
+   name:'Standard Limits',formula:'lim(x→0) sinx/x = 1  ,  lim(x→0) (1+x)^(1/x) = e',
+   title:'Maanak seemayein',
+   desc:'lim(x→0)(eˣ−1)/x = 1. lim(x→0)(aˣ−1)/x = ln a. lim(x→∞)(1+1/x)ˣ = e'},
+  {id:'c2',topic:'Differentiation Rules',cat:'calculus',cls:['11','12'],
+   name:'Basic Derivatives',formula:'d/dx(xⁿ) = nxⁿ⁻¹  ,  d/dx(eˣ) = eˣ',
+   title:'Mool avkalan niyam',
+   desc:'d/dx(constant) = 0. d/dx(ln x) = 1/x. d/dx(aˣ) = aˣ·ln a. d/dx(logₐx) = 1/(x·ln a)'},
+  {id:'c3',topic:'Differentiation Rules',cat:'calculus',cls:['11','12'],
+   name:'Product & Quotient Rule',formula:'(uv)\' = uv\' + vu\'  ,  (u/v)\' = (vu\'−uv\')/v²',
+   title:'Gunan aur bhag niyam',
+   desc:'Product rule: differentiate first × second as is + first as is × differentiate second.'},
+  {id:'c4',topic:'Differentiation Rules',cat:'calculus',cls:['11','12'],
+   name:'Chain Rule',formula:'dy/dx = (dy/du) × (du/dx)',
+   title:'Shrinkhala niyam — composite functions',
+   desc:'Jaise: d/dx[sin(x²)] = cos(x²)·2x. Bahar se andar differentiate karo, phir andar wale ko bhi.'},
+  {id:'c5',topic:'Differentiation Rules',cat:'calculus',cls:['11','12'],
+   name:'Trig Derivatives',formula:'d/dx(sinx)=cosx  ,  d/dx(cosx)=−sinx',
+   title:'Trikonamiti avkalan',
+   desc:'d/dx(tanx)=sec²x. d/dx(cotx)=−cosec²x. d/dx(secx)=secx·tanx. d/dx(cosecx)=−cosecx·cotx'},
+  {id:'c6',topic:'Integration',cat:'calculus',cls:['12'],
+   name:'Power Rule — Integration',formula:'∫xⁿ dx = xⁿ⁺¹/(n+1) + C  ,  (n≠−1)',
+   title:'Samaakal ka ghaat niyam',
+   desc:'∫x⁻¹ dx = ln|x| + C. ∫eˣ dx = eˣ + C. ∫aˣ dx = aˣ/ln(a) + C. C = constant of integration.'},
+  {id:'c7',topic:'Integration',cat:'calculus',cls:['12'],
+   name:'Trig Integrals',formula:'∫sinx dx=−cosx+C  ,  ∫cosx dx=sinx+C',
+   title:'Trikonamiti samaakal',
+   desc:'∫sec²x dx = tanx+C. ∫cosec²x dx = −cotx+C. ∫secx·tanx dx = secx+C.'},
+  {id:'c8',topic:'Integration',cat:'calculus',cls:['12'],
+   name:'Definite Integral',formula:'∫ₐᵇ f(x)dx = F(b) − F(a)',
+   title:'Nirnit samaakal (Newton-Leibniz)',
+   desc:'F(x) antiderivative hai f(x) ka. Geometrically yeh x-axis aur curve ke beech ka area hai.'},
+];
+
+/* ── STATE ── */
+let catF = 'all', clF = 'all';
+let bookmarks = JSON.parse(localStorage.getItem('gk_bm2') || '[]');
+
+const catMeta = {
+  algebra:      { sym:'a', bg:'#eff6ff', clr:'#1e40af' },
+  geometry:     { sym:'G', bg:'#f0fdf4', clr:'#166534' },
+  trigonometry: { sym:'θ', bg:'#f5f3ff', clr:'#6d28d9' },
+  calculus:     { sym:'∫', bg:'#fff4ee', clr:'#c2410c' },
+  statistics:   { sym:'σ', bg:'#f0fdfa', clr:'#0f766e' },
+  arithmetic:   { sym:'%', bg:'#fefce8', clr:'#b45309' },
+  mensuration:  { sym:'π', bg:'#eff6ff', clr:'#0369a1' },
+};
+
+function setCat(c, btn) {
+  catF = c;
+  document.querySelectorAll('.fchip').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+function setCl(c, btn) {
+  clF = c;
+  document.querySelectorAll('.cchip').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  render();
+}
+function clearQ() {
+  document.getElementById('searchInput').value = '';
+  render();
+}
+function toggleBm(id) {
+  bookmarks = bookmarks.includes(id) ? bookmarks.filter(b => b !== id) : [...bookmarks, id];
+  localStorage.setItem('gk_bm2', JSON.stringify(bookmarks));
+  render();
+}
+function copyF(text, btnId) {
+  navigator.clipboard.writeText(text).catch(() => {});
+  const b = document.getElementById(btnId);
+  if (!b) return;
+  b.textContent = '✓ Copied!'; b.classList.add('copied');
+  setTimeout(() => { b.textContent = 'Copy'; b.classList.remove('copied'); }, 2000);
+}
+function scrollTo(id) {
+  const el = document.getElementById('fc-' + id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function render() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  document.getElementById('clrBtn').style.display = q ? 'inline' : 'none';
+
+  const filtered = DB.filter(f => {
+    const mCat = catF === 'all' || f.cat === catF;
+    const mCl  = clF  === 'all' || f.cls.includes(clF);
+    const mQ   = !q || [f.name,f.formula,f.title,f.desc,f.topic,f.cat].some(s => s.toLowerCase().includes(q));
+    return mCat && mCl && mQ;
+  });
+
+  document.getElementById('hTotal').textContent = DB.length;
+  document.getElementById('hShow').textContent  = filtered.length;
+  document.getElementById('hBm').textContent    = bookmarks.length;
+
+  const rt = document.getElementById('resultTxt');
+  rt.innerHTML = q
+    ? `<strong>${filtered.length}</strong> formula mili "<strong>${q}</strong>" ke liye`
+    : `<strong>${filtered.length}</strong> formulas dikh rahe hain`;
+
+  /* Bookmarks bar */
+  const strip = document.getElementById('bmStrip');
+  if (bookmarks.length) {
+    strip.classList.add('show');
+    document.getElementById('bmChips').innerHTML = bookmarks.map(id => {
+      const f = DB.find(x => x.id === id);
+      return f ? `<div class="bm-chip" onclick="scrollTo('${id}')">${f.name}</div>` : '';
+    }).join('');
+  } else {
+    strip.classList.remove('show');
+  }
+
+  const content = document.getElementById('content');
+  if (!filtered.length) {
+    content.innerHTML = '<div class="empty"><div class="empty-sym">?</div><p>Koi formula nahi mila. Alag search try karo.</p></div>';
+    return;
+  }
+
+  /* Group by cat + topic */
+  const groups = {};
+  filtered.forEach(f => {
+    const k = f.cat + '|' + f.topic;
+    if (!groups[k]) groups[k] = { cat: f.cat, topic: f.topic, items: [] };
+    groups[k].items.push(f);
+  });
+
+  content.innerHTML = Object.values(groups).map(g => {
+    const cm = catMeta[g.cat] || { sym:'∑', bg:'#f5f5f5', clr:'#555' };
+    const clList = [...new Set(g.items.flatMap(i => i.cls))].sort((a,b)=>+a-+b).join(', ');
+    return `
+    <div class="topic-block">
+      <div class="topic-header">
+        <div class="topic-icon" style="background:${cm.bg};color:${cm.clr};">${cm.sym}</div>
+        <div>
+          <div class="topic-name">${g.topic}</div>
+          <div class="topic-meta">${g.cat.charAt(0).toUpperCase()+g.cat.slice(1)} · Class ${clList}</div>
+        </div>
+      </div>
+      <div class="fgrid">
+        ${g.items.map(f => {
+          const isBm = bookmarks.includes(f.id);
+          return `
+          <div class="fcard ${f.cat}" id="fc-${f.id}">
+            <div class="f-cat">${f.name}</div>
+            <div class="f-formula">${f.formula}</div>
+            <div class="f-title">${f.title}</div>
+            <div class="f-desc">${f.desc}</div>
+            <div class="f-foot">
+              <span class="f-cls">Class ${f.cls.join(', ')}</span>
+              <div class="f-actions">
+                <button class="act-btn" id="cp-${f.id}"
+                  onclick="copyF('${f.formula.replace(/'/g,'\\\'')}','cp-${f.id}')">Copy</button>
+                <button class="act-btn ${isBm ? 'saved' : ''}"
+                  onclick="toggleBm('${f.id}')">
+                  ${isBm ? '★ Saved' : '☆ Save'}
+                </button>
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.getElementById('searchInput').addEventListener('keydown', e => {
+  if (e.key === 'Escape') clearQ();
+});
+
+render();
+</script>
+</body>
+</html>
